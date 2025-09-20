@@ -1,0 +1,125 @@
+#include <iostream>
+using namespace std;
+const int MAX=100;
+int arr[MAX];
+int n=0;
+void CREATE(){
+    int arr[MAX];
+    cout<<"Enter number of elements ";
+    cin>>n;
+    cout<<"Enter elements\n";
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+}
+void DISPLAY(){
+    int arr[MAX];
+    if (n==0){
+        cout<<"Empty array";
+    }
+    cout<<"Array elements are ";
+    for (int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+}
+void INSERT(){
+    int arr[MAX];
+    if (n>=MAX){
+        cout<<"Array is full, cannot insert more elements";
+        return;
+    }
+    int val,pos;
+    cout<<"Enter position for new element ";
+    cin>>pos;
+    if (pos<0||pos>n){
+        cout<<"invalid";
+        return;
+    }
+    cout<<"Enter new element ";
+    cin>>val;
+    for (int i=n;i>pos;i--){
+        arr[i]=arr[i-1];
+    }
+    arr[pos]=val;
+    n++;
+    cout<<"element inserted successfully";
+}
+void DELETE(){
+    int arr[MAX];
+    if (n==0){
+        cout<<"Empty array";
+        return;
+    }
+    int pos;
+    cout<<"Enter position to delete";
+    cin>>pos;
+    if (pos<0||pos>=n){
+        cout<<"invalid";
+        return;
+    }
+    for(int i=pos;i<n-1;i++){
+        arr[i]=arr[i+1];
+    }
+    n++;
+    cout<<"Deleted successfully\n";
+}
+void LINEAR_SEARCH(){
+    int arr[MAX];
+    if(n==0){
+        cout<<"Empty array\n";
+        return;
+    }
+    int key,found=0;
+    cout<<"Enter value to find";
+    cin>>key;
+    for (int i=0;i<n;i++){
+        if (arr[i]==key){
+            cout<<"Key found at "<<i<<endl;
+            found=1;
+            break;
+        }
+    }
+    if (!found){
+        cout<<"element not found";
+        return;
+    }
+}
+int main(){
+    int choice;
+    do{
+        cout<<"\n-----MENU-----\n";
+        cout<<"1.CREATE\n2.DISPLAY\n3.INSERT\n4.DELETE\n5.LINEAR SEARCH\n6.EXIT\n";
+        cout<<"Enter your choice";
+        cin>>choice;
+        switch(choice){
+            case 1:
+            CREATE();
+            break;
+
+            case 2:
+            DISPLAY();
+            break;
+
+            case 3:
+            INSERT();
+            break;
+
+            case 4:
+            DELETE();
+            break;
+
+            case 5:
+            LINEAR_SEARCH();
+            break;
+
+            case 6:
+            cout<<"Exiting...\n";
+            break;
+
+            default:
+            cout<<"INVALID!!!";
+        }
+    }while(choice!=6);
+    return 0;
+}
