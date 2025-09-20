@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+
+// Bubble Sort function
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        bool swapped = false; // Optimization: check if already sorted
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        if (!swapped) break; // Stop if no swap happened
+    }
+} 
+int delduplicate(int arr[],int n){
+    if (n==0 || n==1){
+        return n;
+    }
+    int j=0;
+    for (int i=0;i<n;i++){
+        if (arr[j]!=arr[i]){
+            j++;
+            arr[j]=arr[i];
+        }
+    }
+    return j+1;
+}
+int main(){
+    int arr[]={1,22,34,4,5,16,27,8,19,10};
+    int n=sizeof(arr)/sizeof(arr[0]);
+    n=delduplicate(arr,n);
+    cout<<"array is ";
+    for (int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    cput<<endl;
+    return 0;
+}
