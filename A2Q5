@@ -1,0 +1,109 @@
+DIAGONAL MATRIX
+#include <iostream>
+using namespace std;
+int main() {
+    int n;
+    cout << "Enter size of square matrix: ";
+    cin >> n;
+    int mat[n][n];
+    cout << "Enter elements:\n";
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            cin >> mat[i][j];
+    bool isDiagonal = true;
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            if(i != j && mat[i][j] != 0)
+                isDiagonal = false;
+    if(isDiagonal) 
+         cout << "Matrix is Diagonal\n";
+    else 
+         cout << "Matrix is NOT Diagonal\n";
+    return 0;
+}
+TRI-DIAGONAL MATRIX
+#include <iostream>
+using namespace std;
+int main() {
+    int n;
+    cout << "Enter size of square matrix: ";
+    cin >> n;
+    int mat[n][n];
+    cout << "Enter elements:\n";
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            cin >> mat[i][j];
+    bool isTriDiagonal = true;
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            if(abs(i-j) > 1 && mat[i][j] != 0)
+                isTriDiagonal = false;
+
+    if(isTriDiagonal) cout << "Matrix is Tri-diagonal\n";
+    else cout << "Matrix is NOT Tri-diagonal\n";
+    return 0;
+}
+LOWER TRIANGULAR MATRIX
+#include <iostream>
+using namespace std;
+int main() {
+    int n;
+    cout << "Enter size of square matrix: ";
+    cin >> n;
+    int mat[n][n];
+    cout << "Enter elements:\n";
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            cin >> mat[i][j];
+    bool isLower = true;
+    for(int i=0; i<n; i++)
+        for(int j=i+1; j<n; j++)
+            if(mat[i][j] != 0)
+                isLower = false;
+    if(isLower) cout << "Matrix is Lower Triangular\n";
+    else cout << "Matrix is NOT Lower Triangular\n";
+    return 0;
+}
+UPPER TRIANGULAR MATRIX
+#include <iostream>
+using namespace std;
+int main() {
+    int n;
+    cout << "Enter size of square matrix: ";
+    cin >> n;
+    int mat[n][n];
+    cout << "Enter elements:\n";
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            cin >> mat[i][j];
+    bool isUpper = true;
+    for(int i=1; i<n; i++)
+        for(int j=0; j<i; j++)
+            if(mat[i][j] != 0)
+                isUpper = false;
+    if(isUpper) cout << "Matrix is Upper Triangular\n";
+    else cout << "Matrix is NOT Upper Triangular\n";
+    return 0;
+}
+SYMMETRIC MATRIX
+#include <iostream>
+using namespace std;
+int main() {
+    int n;
+    cout << "Enter size of square matrix: ";
+    cin >> n;
+
+    int mat[n][n];
+    cout << "Enter elements:\n";
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            cin >> mat[i][j];
+    bool isSymmetric = true;
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            if(mat[i][j] != mat[j][i])
+                isSymmetric = false;
+    if(isSymmetric) cout << "Matrix is Symmetric\n";
+    else cout << "Matrix is NOT Symmetric\n";
+    return 0;
+}
