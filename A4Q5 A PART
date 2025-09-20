@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std
+#define MAX 100
+class Queue {
+    int arr[MAX], front, rear;
+public:
+    Queue() { front = 0; rear = -1; }
+    bool isEmpty() { return front > rear; }
+    void enqueue(int x) { arr[++rear] = x; }
+    int dequeue() { return arr[front++]; }
+    int size() { return rear - front + 1; }
+    int peek() { return arr[front]; }
+    void reset() { front = 0; rear = -1; }
+};
+class StackTwoQ {
+    Queue q1, q2;
+public:
+    void push(int x) {
+        q2.enqueue(x);
+        while (!q1.isEmpty())
+            q2.enqueue(q1.dequeue());
+        Queue temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+    void pop() {
+        if (q1.isEmpty()) {
+            cout << "Stack Underflow\n";
+            return;
+        }
+        cout << "Popped: " << q1.dequeue() << "\n";
+    }
+    void top() {
+        if (q1.isEmpty()) {
+            cout << "Stack Empty\n";
+            return;
+        }
+        cout << "Top: " << q1.peek() << "\n";
+    }
+};
+int main() {
+    StackTwoQ st;
+    st.push(10);
+    st.push(20);
+    st.top();
+    st.pop();
+    st.top();
+}
