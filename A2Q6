@@ -1,0 +1,109 @@
+#include <iostream>
+using namespace std;
+struct Triplet {
+    int row;
+    int col;
+    int value;
+};
+// Function to print sparse matrix
+void printSparse(Triplet arr[], int n) {
+    cout << "Row\tCol\tValue\n";
+    for(int i = 0; i < n; i++) {
+        cout << arr[i].row << "\t" << arr[i].col << "\t" << arr[i].value << endl;
+    }
+}
+
+// Transpose of sparse matrix
+void transpose(Triplet arr[], Triplet t[], int n) {
+    for(int i = 0; i < n; i++) {
+        t[i].row = arr[i].col;
+        t[i].col = arr[i].row;
+        t[i].value = arr[i].value;
+    }
+}
+// Addition of two sparse matrices
+int addSparse(Triplet a[], int n1, Triplet b[], int n2, Triplet result[]) {
+    int i = 0, j = 0, k = 0;
+    while(i < n1 && j < n2) {
+        if(a[i].row < b[j].row || (a[i].row == b[j].row && a[i].col < b[j].col))
+            result[k++] = a[i++];
+        else if(b[j].row < a[i].row || (b[j].row == a[i].row && b[j].col < a[i].col))
+            result[k++] = b[j++];
+        else {
+            result[k] = a[i];
+            result[k].value = a[i].value + b[j].value;
+            i++; j++; k++;
+        }
+    }
+    while(i < n1) result[k++] = a[i++];
+    while(j < n2) result[k++] = b[j++];
+    return k;
+}
+
+// Multiplication of two sparse matrices
+int multiplySparse(Triplet a[], int n1, int aRows, int aCols,
+                   Triplet b[], int n2, int bRows, int bCols,
+                   Triplet result[]) {
+    if(aCols != bRows) {
+        cout << "Multiplication not possible!\n";
+        return 0;
+    }
+    int k = 0;
+    for(int i = 0; i < n1; i++) {
+        for(int j = 0; j < n2; j++) {
+            if(a[i].column == b[j].row) {
+                // Check if position already exists
+                int found = -1;
+                for(int m = 0; m < k; m++)
+                    if(result[m].row == a[i].row && result[m].column == b[j].column)
+                        found = m;
+                if(found != -1)
+                    result[found].value += a[i].value * b[j].value;
+                else {
+                    result[k].row = a[i].row;
+                    result[k].column = b[j].column;
+                    result[k].value = a[i].value * b[j].value;
+                    k++;
+                }
+            }
+        }
+    }
+    return k;
+}
+int main() {
+    int x,y;
+    cout<<"Enter number of non zero elements in matrix 1: ";
+    cin>>x;
+    triplet t[100];
+    cout << "Enter row, col, value:\n";
+    for(int i=0;i<x;i++){
+        cin >> t[i].row >> t[i].column >> t[i].value;
+    }
+
+    cout<<"Enter number of non zero elements in matrix 2: ";
+    cin>>y;
+    triplet s[100];
+    cout << "Enter row, col, value:\n";
+    for(int i=0;i<x;i++){
+        cin >> s[i].row >> s[i].column >> s[i].value;
+    }
+    triplet a[100];
+    transpose(t,a,x);
+    cout<<"Transpose of first matrix is ";
+    print_sparse(a,x);
+    
+    triplet b[100];
+    transpose(s,b,y);
+    cout<<"Transpose of second matrix is ";
+    print_sparse(b,y);    // Addition
+    Triplet sum[200];
+    int sumSize = add_sparse(a, x, b, y, sum);
+    cout << "\nAddition of matrices:\n";
+    print_sparse(sum, sumSize);
+    // Multiplication
+    Triplet prod[200];
+    int prodSize = multiply_sparse(a, x, 10, 10, b, y, 10, 10, prod); // assuming max 10x10 matrices
+    cout << "\nMultiplication of matrices:\n";
+    print_sparse(prod, prodSize);
+    return 0;
+}
