@@ -1,0 +1,55 @@
+#include <iostream>
+using namespace std;
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int new_data) {
+        data = new_data;
+        next = NULL;
+    }
+};
+class CircularLinkedList {
+    private:
+    Node* head;
+    public:
+    CircularLinkedList() {
+        head = NULL;
+    }
+    void insertEnd(int val) {
+        Node* newNode = new Node(val);
+        if (head == NULL) {
+            head = newNode;
+            newNode->next = head;  // circular link
+            return;
+        }
+        Node* temp = head;
+        while (temp->next != head)
+            temp = temp->next;
+        temp->next = newNode;
+        newNode->next = head;
+    }
+    void display() {
+        if (head == NULL) {
+            cout << "Empty";
+            return;
+        }
+        Node* temp = head;
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != head);
+        cout << head->data << endl;
+    }
+};
+int main() {
+    CircularLinkedList cll;
+    cll.insertEnd(10);
+    cll.insertEnd(20);
+    cll.insertEnd(30);
+    cll.insertEnd(40);
+    cout<<"Circular Linked List with first element repeated: ";
+    cll.display();
+    return 0;
+}
