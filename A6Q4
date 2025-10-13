@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+class Node{
+    public:
+    char data;
+    Node* next;
+    Node* prev;
+    Node(char new_data){
+        data=new_data;
+        next=nullptr;
+        prev=nullptr;
+    }
+};
+bool isPalindrome(Node* head){
+    if(head==nullptr || head->next==nullptr){
+        return true;
+    }
+    Node* tail=head;
+    while(tail->next!=nullptr){
+        tail=tail->next;
+    }
+    Node* p=head;
+    Node* q=tail;
+    while(p!=q && p!=q->next){
+        if(p->data!=q->data){
+            return false;
+        }
+        p=p->next;
+        q=q->prev;
+        return true;
+    }
+    return true;
+}
+int main(){
+    Node* head=new Node('A');
+    head->next=new Node('N');
+    head->next->prev=head;
+    head->next->next=new Node('N');
+    head->next->next->prev=head->next;
+    head->next->next->next=new Node('M');
+    if(isPalindrome(head)){
+        cout<<"Palindrome\n";
+    }
+    else{
+        cout<<"Not Palindrome\n";
+    }
+    return 0;
+}
