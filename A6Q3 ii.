@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int new_data) {
+        data = new_data;
+        next = NULL;
+    }
+};
+class CLL {
+private:
+    Node* head;
+public:
+    CLL() {
+        head = NULL;
+    }
+    void insertEnd(int val) {
+        Node* newNode = new Node(val);
+        if (head == NULL) {
+            head = newNode;
+            newNode->next = head;  
+            return;
+        }
+        Node* temp = head;
+        while (temp->next != head)
+            temp = temp->next;
+
+        temp->next = newNode;
+        newNode->next = head;
+    }
+    void display() {
+        if (head == NULL) {
+            cout << "Empty";
+            return;
+        }
+        Node* temp = head;
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != head);
+        cout << endl;
+    }
+    int size() {
+        if (head == NULL)
+            return 0;
+        int count = 1;
+        Node* temp = head;
+        while (temp->next != head) {
+            count++;
+            temp = temp->next;
+        }
+        return count;
+    }
+};
+int main() {
+    CLL cll;
+    cll.insertEnd(10);
+    cll.insertEnd(20);
+    cll.insertEnd(30);
+    cll.insertEnd(40);
+    cll.display();
+    cout << "Size of Circular Linked List = " << cll.size() << endl;
+    return 0;
+}
