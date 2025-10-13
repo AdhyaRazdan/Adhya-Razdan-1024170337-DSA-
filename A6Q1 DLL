@@ -1,0 +1,191 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+    Node(int new_data) {
+        data = new_data;
+        prev = NULL;
+        next = NULL;
+    }
+};
+class DoublyLinkedList {
+    private:
+    Node* head;
+    public:
+    DoublyLinkedList() {
+        head = NULL;
+    }
+    void insertAtBeginning(int value) {
+        Node* newNode = new Node(value);
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+        cout << "Node inserted at beginning\n";
+    }
+    void insertAtEnd(int value) {
+        Node* newNode = new Node(value);
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            Node* temp = head;
+            while (temp->next != NULL)
+                temp = temp->next;
+
+            temp->next = newNode;
+            newNode->prev = temp;
+        }
+        cout << "Node inserted at end\n";
+    }
+    void insertAfter(int key, int value) {
+        Node* temp = head;
+        while (temp != NULL && temp->data != key)
+            temp = temp->next;
+        if (temp == NULL) {
+            cout << "Node " << key << " not found\n";
+            return;
+        }
+        Node* newNode = new Node(value);
+        newNode->next = temp->next;
+        newNode->prev = temp;
+        if (temp->next != NULL)
+            temp->next->prev = newNode;
+        temp->next = newNode;
+
+        cout << "Node inserted after " << key << "\n";
+    }
+    void insertBefore(int key, int value) {
+        Node* temp = head;
+        while (temp != NULL && temp->data != key)
+            temp = temp->next;
+        if (temp == NULL) {
+            cout << "Node " << key << " not found.\n";
+            return;
+        }
+        Node* newNode = new Node(value);
+        newNode->next = temp;
+        newNode->prev = temp->prev;
+        if (temp->prev != NULL)
+            temp->prev->next = newNode;
+        else
+            head = newNode; 
+        temp->prev = newNode;
+        cout << "Node inserted before " << key << ".\n";
+    }
+    void deleteNode(int key) {
+        if (head == NULL) {
+            cout << "Empty\n";
+            return;
+        }
+        Node* temp = head;
+        while (temp != NULL && temp->data != key)
+            temp = temp->next;
+
+        if (temp == NULL) {
+            cout <<"Not found\n";
+            return;
+        }
+        if (temp == head)
+            head = temp->next;
+        if (temp->next != NULL)
+            temp->next->prev = temp->prev;
+        if (temp->prev != NULL)
+            temp->prev->next = temp->next;
+        delete temp;
+        cout <<"Deleted\n";
+    }
+    void searchNode(int key) {
+        Node* temp = head;
+        int position = 1;
+        while (temp != NULL) {
+            if (temp->data == key) {
+                cout <<"Found at position " << position << "\n";
+                return;
+            }
+            temp = temp->next;
+            position++;
+        }
+        cout <<"Not found\n";
+    }
+    void display() {
+        if (head == NULL) {
+            cout << "Empty\n";
+            return;
+        }
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+int main() {
+    DoublyLinkedList list;
+    int choice, value, key;
+    do {
+        cout << "\n--- DOUBLY LINKED LIST MENU ---\n";
+        cout << "1. Insert at Beginning\n";
+        cout << "2. Insert at End\n";
+        cout << "3. Insert After a Node\n";
+        cout << "4. Insert Before a Node\n";
+        cout << "5. Delete a Node\n";
+        cout << "6. Search a Node\n";
+        cout << "7. Display List\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice) {
+            case 1:
+                cout << "Enter value to insert: ";
+                cin >> value;
+                list.insertAtBeginning(value);
+                break;
+            case 2:
+                cout << "Enter value to insert: ";
+                cin >> value;
+                list.insertAtEnd(value);
+                break;
+            case 3:
+                cout << "Enter key after which to insert: ";
+                cin >> key;
+                cout << "Enter value to insert: ";
+                cin >> value;
+                list.insertAfter(key, value);
+                break;
+            case 4:
+                cout << "Enter key before which to insert: ";
+                cin >> key;
+                cout << "Enter value to insert: ";
+                cin >> value;
+                list.insertBefore(key, value);
+                break;
+            case 5:
+                cout << "Enter value to delete: ";
+                cin >> key;
+                list.deleteNode(key);
+                break;
+            case 6:
+                cout << "Enter value to search: ";
+                cin >> key;
+                list.searchNode(key);
+                break;
+            case 7:
+                list.display();
+                break;
+            case 8:
+                cout << "Exiting program...\n";
+                break;
+            default:
+                cout << "Invalid choice! Try again.\n";
+        }
+    } while (choice != 8);
+    return 0;
+}
