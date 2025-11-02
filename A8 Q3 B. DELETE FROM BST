@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+class Node {
+public:
+	int data;
+	Node* left;
+	Node* right;
+	Node(int new_data) {
+		data=new_data;
+		left=right=nullptr;
+	}
+};
+
+void inorder(Node* root){   //LPR
+    if(root==NULL){
+        return;
+    }
+    inorder(root->left);
+    cout<<root->data<<" ";
+    inorder(root->right);
+}
+Node* getsuc(Node* curr){
+    curr=curr->right;
+    while(curr!=NULL && curr->left!=NULL){
+        curr=curr->left;
+    }
+    return curr;
+}
+Node* del(Node* root, int num){
+    if(root==NULL){
+        return root;
+    }
+    if(num < root->data){
+        root->left=del(root->left,num);
+    }
+    else if(num > root->data){
+        root->right=del(root->right,num);
+    }
+    else{
+        if(root->left==NULL){
+            Node* temp=root->right;
+            delete root;
+            return temp;
+        }
+        if (root->right==NULL){
+            Node* temp=root->left;
+            delete root;
+            return temp;
+        }
+        Node* succ =getsuc(root);
+        root->data=succ->data;
+        root->right=del(root->right,succ->data);
+    }
+    return root;
+}
+int main() {
+	Node* root=new Node(50);
+	root->left=new Node(30);
+	root->right=new Node(70);
+	root->left->left=new Node(20);
+	root->left->right=new Node(40);
+	root->right->left=new Node(60);
+	root->right->right=new Node(80);
+	
+	cout<<"Before: ";
+	inorder(root);
+	cout<<endl;
+	Node* res=del(root,40);
+	
+	cout<<"After: ";
+	inorder(root);
+	return 0;
+}
