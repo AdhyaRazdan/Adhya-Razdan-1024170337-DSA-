@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+class Node {
+public:
+	int data;
+	Node* left;
+	Node* right;
+	Node(int new_data) {
+		data=new_data;
+		left=right=nullptr;
+	}
+};
+
+void inorder(Node* root){   //LPR
+    if(root==NULL){
+        return;
+    }
+    inorder(root->left);
+    cout<<root->data<<" ";
+    inorder(root->right);
+}
+Node* TreeMin(Node* root){
+    while(root->left!=NULL){
+        root=root->left;
+    }
+    return root;
+}
+
+Node* TreeMax(Node* root){
+    while(root->right!=NULL){
+        root=root->right;
+    }
+    return root;
+}
+
+int main() {
+	Node* root=new Node(50);
+	root->left=new Node(30);
+	root->right=new Node(70);
+	root->left->left=new Node(20);
+	root->left->right=new Node(40);
+	root->right->left=new Node(60);
+	root->right->right=new Node(80);
+	
+	cout<<"Inorder: ";
+	inorder(root);
+	
+	Node* result=TreeMin(root);
+	if(result != NULL){
+    cout<<"\nMinimum: "<<result->data;
+	}
+	else{
+    cout<<"\nNot Found";
+	}
+	
+	Node* res=TreeMax(root);
+	if(res != NULL){
+    cout<<"\nMaximum: "<<res->data;
+	}
+	else{
+    cout<<"\nNot Found";
+	}
+	return 0;
+}
