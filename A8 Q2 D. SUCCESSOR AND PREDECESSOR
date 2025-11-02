@@ -1,0 +1,119 @@
+#include <iostream>
+using namespace std;
+class Node {
+public:
+	int data;
+	Node* left;
+	Node* right;
+	Node(int new_data) {
+		data=new_data;
+		left=right=nullptr;
+	}
+};
+
+void inorder(Node* root){   //LPR
+    if(root==NULL){
+        return;
+    }
+    inorder(root->left);
+    cout<<root->data<<" ";
+    inorder(root->right);
+}
+Node* TreeMin(Node* root){
+    while(root->left!=NULL){
+        root=root->left;
+    }
+    return root;
+}
+
+Node* TreeMax(Node* root){
+    while(root->right!=NULL){
+        root=root->right;
+    }
+    return root;
+}
+Node* search(Node* root, int value){
+    if(root==NULL || root->data==value){
+        return root;
+    }
+    if(value < root->data){
+        return search(root->left,value);
+    }
+    else if(value > root->data){
+        return search(root->right,value);
+    }
+    else{
+        return NULL;
+    }
+}
+
+Node* Sucessor(Node* root,int key){
+    Node* curr=search(root,key);
+    if(curr==NULL){
+        return NULL;
+    }
+    if(curr->right!=NULL){
+        return TreeMin(curr->right);
+    }
+    Node* successor = NULL;
+    Node* ancestor = root;
+    while(ancestor != curr){
+        if(curr->data < ancestor->data){
+            successor = ancestor;
+            ancestor = ancestor->left;
+        }
+        else{
+            ancestor = ancestor->right;
+        }
+    }
+    return successor;
+}
+
+Node* Predecessor(Node* root,int key){
+    Node* curr = search(root,key);
+    if(curr == NULL){
+        return NULL;
+    }
+    if(curr->left != NULL){
+        return TreeMax(curr->left);
+    }
+    Node* predecessor = NULL;
+    Node* ancestor = root;
+    while(ancestor != curr){
+        if(curr->data > ancestor->data){
+            predecessor = ancestor;
+            ancestor = ancestor->right;
+        }
+        else{
+            ancestor = ancestor->left;
+        }
+    }
+    return predecessor;
+}
+int main() {
+	Node* root=new Node(50);
+	root->left=new Node(30);
+	root->right=new Node(70);
+	root->left->left=new Node(20);
+	root->left->right=new Node(40);
+	root->right->left=new Node(60);
+	root->right->right=new Node(80);
+	
+	cout<<"Inorder: ";
+	inorder(root);
+	
+	Node* succ=Sucessor(root,70);
+	if(succ != NULL){
+    cout<<"\nSucessor: "<<succ->data;
+	}
+	else{
+    cout<<"\nNo Successor";
+	}
+	
+	Node* pred = Predecessor(root,70);
+	if(pred != NULL)
+    cout << "\nPredecessor: " << pred->data;
+    else
+    cout << "\nNo Predecessor";
+	return 0;
+}
