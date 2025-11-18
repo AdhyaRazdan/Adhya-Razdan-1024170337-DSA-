@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+void heapify(int arr[], int n, int i, bool maxHeap) {
+    int extreme = i; 
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    if (left < n && ((maxHeap && arr[left] > arr[extreme]) || (!maxHeap && arr[left] < arr[extreme]))) {
+        extreme = left;
+    }
+    if (right < n && ((maxHeap && arr[right] > arr[extreme]) || (!maxHeap && arr[right] < arr[extreme]))) {
+        extreme = right;
+    }
+    if (extreme != i) {
+        swap(arr[i], arr[extreme]);
+        heapify(arr, n, extreme, maxHeap);
+    }
+}
+void heapSort(int arr[], int n, bool increasingOrder) {
+    bool buildMaxHeap = increasingOrder;
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapify(arr, n, i, buildMaxHeap);
+    }
+    for (int i = n - 1; i > 0; i--) {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0, buildMaxHeap);
+    }
+}
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+int main() {
+    int arr1[] = {12, 11, 13, 5, 6, 7};
+    int arr2[] = {12, 11, 13, 5, 6, 7};
+    int n = sizeof(arr1) / sizeof(arr1[0]);
+    heapSort(arr1, n, true);
+    cout << "Sorted in increasing order: ";
+    printArray(arr1, n);
+    heapSort(arr2, n, false);
+    cout << "Sorted in decreasing order: ";
+    printArray(arr2, n);
+    return 0;
+}
