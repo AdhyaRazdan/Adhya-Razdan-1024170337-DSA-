@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+    int v;
+    node *next;
+};
+node *adj[20];   
+int color[20];   // 0 = WHITE, 1 = GRAY, 2 = BLACK
+int d[20];       
+int pi[20];      
+int Q[50];
+int front = 0, rear = 0;
+
+void enqueue(int x) {
+    Q[rear++] = x;
+}
+int dequeue() {
+    return Q[front++];
+}
+bool isEmpty() {
+    return front == rear;
+}
+void addEdge(int u, int v) {
+    node *temp = new node;
+    temp->v = v;
+    temp->next = adj[u];
+    adj[u] = temp;
+}
+void BFS(int s, int n) {
+    for (int u = 1; u <= n; u++) {
+        color[u] = 0;        // WHITE
+        d[u] = 999999;       // infinity
+        pi[u] = -1;          // NIL
+    }
+    color[s] = 1; // GRAY
+    d[s] = 0;
+    pi[s] = -1;
+    front = rear = 0;   
+    enqueue(s);
+    while (!isEmpty()) {
+        int u = dequeue();
+        node *p = adj[u];
+        while (p != NULL) {
+            int v = p->v;
+            if (color[v] == 0) {   // WHITE
+                color[v] = 1;      // GRAY
+                d[v] = d[u] + 1;
+                pi[v] = u;
+                enqueue(v);
+            }
+            p = p->next;
+        }
+        color[u] = 2; // BLACK
+    }
+}
+
+int main() {
+    int n, e, u, v, start;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+    for (int i = 1; i <= n; i++) adj[i] = NULL;
+    cout << "Enter number of edges: ";
+    cin >> e;
+    cout << "Enter edges (u v):\n";
+    for (int i = 0; i < e; i++) {
+        cin >> u >> v;
+        addEdge(u, v); // directed edge
+        // addEdge(v, u); // use this for undirected graph
+    }
+    cout << "Enter BFS start vertex: ";
+    cin >> start;
+    BFS(start, n);
+    cout << "\nVertex  Distance  Parent\n";
+    for (int i = 1; i <= n; i++) {
+        cout << i << "\t" << d[i] << "\t" << pi[i] << "\n";
+    }
+    return 0;
+}
