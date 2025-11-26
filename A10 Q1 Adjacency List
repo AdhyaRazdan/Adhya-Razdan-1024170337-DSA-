@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+#define MAX 20
+
+struct Node {
+    int v;
+    Node* next;
+};
+int main() {
+    int n, e, u, v;
+    Node* head[MAX];
+    cin >> n>>e;
+    for(int i=0;i<n;i++){
+        head[i] = NULL;
+    }
+    for(int i=0;i<e;i++) {
+        cin>>u >>v;
+        Node* t1 = new Node;
+        t1->v=v;
+        t1->next =head[u];
+        head[u] =t1;
+        Node* t2=new Node;
+        t2->v=u;
+        t2->next= head[v];
+        head[v] =t2;
+    }
+    int vertex;
+    cin >>vertex;
+    int degree =0;
+    Node* p = head[vertex];
+    while(p != NULL){
+        degree++;
+        p =p->next;
+    }
+    cout << degree;
+    p = head[vertex];
+    while(p != NULL) {
+        cout << p->v << " ";
+        p = p->next;
+    }
+    cout << endl;
+    int edges = 0;
+    for(int i=0;i<n;i++) {
+        p = head[i];
+        while(p != NULL) {
+            edges++;
+            p = p->next;
+        }
+    }
+    edges/=2;
+    cout <<edges;
+    return 0;
+}
