@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 5     //vertices
+#define EDGES 6   
+class Edge {
+public:
+    char src, dest;
+    int weight;
+};
+class Subset {
+public:
+    char parent;
+    int rank;
+};
+char findSet(Subset S[], char node) {
+    if (S[node - 'A'].parent != node){
+        S[node - 'A'].parent = findSet(S, S[node - 'A'].parent);
+    }
+    return S[node - 'A'].parent;
+}
+void unionSet(Subset S[], char a, char b) {
+    char rootA = findSet(S, a);
+    char rootB = findSet(S, b);
+
+    if (rootA != rootB) {
+        if (S[rootA - 'A'].rank > S[rootB - 'A'].rank)
+            S[rootB - 'A'].parent = rootA;
+        else if (S[rootA - 'A'].rank < S[rootB - 'A'].rank)
+            S[rootA - 'A'].parent = rootB;
+        else {
+            S[rootB - 'A'].parent = rootA;
+            S[rootA - 'A'].rank++;
+        }
+    }
+}
+void kruskal(Edge edges[]) {
+
+    Edge result[MAX - 1];      
+    int e = 0;                 
+    int idx = 0;               
+    for (int i = 0; i < EDGES - 1; i++) {
+        for (int j = 0; j < EDGES - i - 1; j++) {
+            if (edges[j].weight > edges[j + 1].weight) {
+                Edge temp = edges[j];
+                edges[j] = edges[j + 1];
+                edges[j + 1] = temp;
+            }
+        }
+    }
+    Subset S[MAX];
+    for (int i = 0; i < MAX; i++) {
+        S[i].parent = 'A' + i;   
+        S[i].rank = 0;
+    }
+    while (e < MAX - 1 && idx < EDGES) {
+        Edge next = edges[idx++];
+        char root1 = findSet(S, next.src);
+        char root2 = findSet(S, next.dest);
+        if (root1 != root2) {
+            result[e++] = next;
+            unionSet(S, root1, root2);
+        }
+    }
+    cout << "\nEdges in the Minimum Spanning Tree:\n";
+    for (int i = 0; i < e; i++) {
+        cout << result[i].src << " -- "
+             << result[i].weight << " -- "
+             << result[i].dest << endl;
+    }
+}
+int main() {
+    Edge edges[EDGES] = {
+        {'A', 'B', 5},
+        {'B', 'C', 3},
+        {'C', 'E', 4},
+        {'A', 'D', 1},
+        {'D', 'C', 7},
+        {'B', 'E', 8}
+    };
+    cout << "Kruskal's Minimum Spanning Tree:\n";
+    kruskal(edges);
+    return 0;
+}
