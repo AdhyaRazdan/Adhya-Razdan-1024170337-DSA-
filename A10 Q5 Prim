@@ -1,0 +1,111 @@
+#include <iostream>
+using namespace std;
+#define INF 999999
+#define MAX 20
+
+struct MinHeap {
+    int heap[MAX];
+    int size;
+    int key[MAX]; 
+    void init(int n, int arr[]) {
+        size = n;
+        for (int i = 0; i < n; i++) {
+            heap[i] = i;
+        }
+        for (int i = 0; i < n; i++) key[i] = arr[i];
+        buildHeap();
+    }
+    void swapNodes(int &a, int &b) {
+        int t = a; a = b; b = t;
+    }
+    void minHeapify(int i) {
+        int left = 2*i + 1;
+        int right = 2*i + 2;
+        int smallest = i;
+        
+        if (left < size && key[heap[left]] < key[heap[smallest]])
+            smallest = left;
+        if (right < size && key[heap[right]] < key[heap[smallest]])
+            smallest = right;
+        if (smallest != i) {
+            swapNodes(heap[i], heap[smallest]);
+            minHeapify(smallest);
+        }
+    }
+    void buildHeap() {
+        for (int i = size/2 - 1; i >= 0; i--) {
+            minHeapify(i);
+        }
+    }
+    int extractMin() {
+        if (size <= 0) return -1;
+        int root = heap[0];
+        heap[0] = heap[size-1];
+        size--;
+        minHeapify(0);
+        return root;
+    }
+    void decreaseKey(int vertex, int newKey) {
+        key[vertex] = newKey;
+        for (int i = 0; i < size; i++) {
+            if (heap[i] == vertex) {
+                int j = i;
+                while (j != 0 && key[heap[(j-1)/2]] > key[heap[j]]) {
+                    swapNodes(heap[j], heap[(j-1)/2]);
+                    j = (j-1)/2;
+                }
+                break;
+            }
+        }
+    }
+    bool exists(int v) {
+        for (int i = 0; i < size; i++)
+            if (heap[i] == v) return true;
+        return false;
+    }
+};
+void primMST(int graph[MAX][MAX], int n, int r) {
+    int key[MAX];
+    int parent[MAX];
+    int visited[MAX];
+    for (int i = 0; i < n; i++) {
+        key[i] = INF;
+        parent[i] = -1;
+        visited[i] = 0;
+    }
+    key[r] = 0;
+    MinHeap pq;
+    pq.init(n, key);
+    while (pq.size > 0) {
+        int u = pq.extractMin();
+        visited[u] = 1;
+        for (int v = 0; v < n; v++) {
+            if (graph[u][v] != 0 && pq.exists(v) && graph[u][v] < key[v]) {
+                parent[v] = u;
+                pq.decreaseKey(v, graph[u][v]);
+            }
+        }
+    }
+    cout << "\nMST (Prim's Algorithm):\n";
+    for (int i = 0; i < n; i++) {
+        if (i != r)
+            cout << parent[i] << " - " << i << "   weight=" << key[i] << "\n";
+    }
+}
+int main() {
+    int n;
+    int graph[MAX][MAX];
+    cout << "Enter number of vertices: ";
+    cin >> n;
+    cout << "Enter adjacency matrix (0 for no edge):\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> graph[i][j];
+        }
+    }
+    int root;
+    cout << "Enter starting vertex: ";
+    cin >> root;
+    primMST(graph, n, root);
+    return 0;
+}
