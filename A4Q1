@@ -65,18 +65,16 @@ public:
 
     void display() {
         if (isEmpty()) {
-            cout << "Queue is EMPTY!\n";
+            cout << EMPTY";
             return;
         }
-        cout << "Queue elements: ";
+        cout << "elements: ";
         for (int i = front; i <= rear; i++) {
             cout << arr[i] << " ";
         }
         cout << endl;
     }
 };
-
-// ---------------- MAIN MENU ----------------
 int main() {
     int capacity;
     cout << "Enter size of Queue: ";
@@ -103,7 +101,6 @@ int main() {
             cin >> value;
             q.enqueue(value);
             break;
-
         case 2:
             q.dequeue();
             break;
@@ -115,25 +112,21 @@ int main() {
         case 4:
             q.display();
             break;
-
         case 5:
             if (q.isEmpty())
                 cout << "Queue is EMPTY.\n";
             else
                 cout << "Queue is NOT empty.\n";
             break;
-
         case 6:
             if (q.isFull())
                 cout << "Queue is FULL.\n";
             else
                 cout << "Queue is NOT full.\n";
             break;
-
         case 0:
             cout << "Exiting program...\n";
             break;
-
         default:
             cout << "Invalid choice! Try again.\n";
         }
