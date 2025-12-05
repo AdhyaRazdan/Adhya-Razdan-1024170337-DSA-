@@ -1,0 +1,36 @@
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    Node(int x){
+        data=x;
+        left=NULL;
+        right=NULL;
+    }
+};
+bool checkDuplicates(Node* root, unordered_set<int> &s) {
+    if (root == NULL) return false;
+    if (s.count(root->data)) return true;
+    s.insert(root->data);
+    return checkDuplicates(root->left, s) ||checkDuplicates(root->right, s);
+}
+bool containsDuplicate(Node* root) {
+    unordered_set<int> s;
+    return checkDuplicates(root, s);
+}
+
+int main() {
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->right->left = new Node(2);   
+    root->right->right = new Node(4);
+    if (containsDuplicate(root))
+        cout << "Duplicates Found";
+    else
+        cout << "No Duplicates";
+}
