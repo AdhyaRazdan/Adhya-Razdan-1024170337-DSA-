@@ -1,7 +1,5 @@
 #include <iostream>
 using namespace std;
-
-// Node structure
 class Node {
 public:
     int data;
@@ -11,16 +9,11 @@ public:
         next = nullptr;
     }
 };
-
-// Insert at the beginning
 void insertAtBeginning(Node*& head, int data) {
     Node* newNode = new Node(data);
     newNode->next = head;
     head = newNode;
-    cout << data << " inserted at the beginning.\n";
 }
-
-// Insert at the end
 void insertAtEnd(Node*& head, int data) {
     Node* newNode = new Node(data);
     if (head == nullptr) {
@@ -31,16 +24,12 @@ void insertAtEnd(Node*& head, int data) {
             temp = temp->next;
         temp->next = newNode;
     }
-    cout << data << " inserted at the end.\n";
 }
-
-// Insert before or after a specific node
 void insertBeforeAfter(Node*& head, int target, int data, bool before) {
     if (head == nullptr) {
         cout << "List is empty.\n";
         return;
     }
-
     if (before) {
         if (head->data == target) {
             insertAtBeginning(head, data);
@@ -59,7 +48,6 @@ void insertBeforeAfter(Node*& head, int target, int data, bool before) {
         Node* newNode = new Node(data);
         prev->next = newNode;
         newNode->next = current;
-        cout << data << " inserted before " << target << ".\n";
     } else {
         Node* current = head;
         while (current != nullptr && current->data != target) {
@@ -76,7 +64,6 @@ void insertBeforeAfter(Node*& head, int target, int data, bool before) {
     }
 }
 
-// Delete from the beginning
 void deleteFromBeginning(Node*& head) {
     if (head == nullptr) {
         cout << "List is empty.\n";
@@ -84,18 +71,15 @@ void deleteFromBeginning(Node*& head) {
     }
     Node* temp = head;
     head = head->next;
-    cout << "Deleted " << temp->data << " from the beginning.\n";
     delete temp;
 }
 
-// Delete from the end
 void deleteFromEnd(Node*& head) {
     if (head == nullptr) {
         cout << "List is empty.\n";
         return;
     }
     if (head->next == nullptr) {
-        cout << "Deleted " << head->data << " from the end.\n";
         delete head;
         head = nullptr;
         return;
@@ -106,12 +90,9 @@ void deleteFromEnd(Node*& head) {
         prev = current;
         current = current->next;
     }
-    cout << "Deleted " << current->data << " from the end.\n";
     prev->next = nullptr;
     delete current;
 }
-
-// Delete a specific node
 void deleteSpecificNode(Node*& head, int target) {
     if (head == nullptr) {
         cout << "List is empty.\n";
@@ -138,8 +119,6 @@ void deleteSpecificNode(Node*& head, int target) {
     cout << "Deleted node " << target << ".\n";
     delete current;
 }
-
-// Search for a node and display its position
 void searchNode(Node* head, int target) {
     int pos = 1;
     Node* current = head;
@@ -153,15 +132,12 @@ void searchNode(Node* head, int target) {
     }
     cout << "Node " << target << " not found.\n";
 }
-
-// Display all nodes
 void displayList(Node* head) {
     if (head == nullptr) {
         cout << "List is empty.\n";
         return;
     }
     Node* current = head;
-    cout << "List contents: ";
     while (current != nullptr) {
         cout << current->data;
         if (current->next != nullptr)
@@ -170,15 +146,12 @@ void displayList(Node* head) {
     }
     cout << endl;
 }
-
-// Main function with menu-driven interface
 int main() {
     Node* head = nullptr;
     int choice, data, target;
     bool beforeAfter;
 
     do {
-        cout << "\nMenu:\n";
         cout << "1. Insert at the beginning\n";
         cout << "2. Insert at the end\n";
         cout << "3. Insert before or after a specific node\n";
@@ -190,7 +163,6 @@ int main() {
         cout << "9. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
-
         switch(choice) {
             case 1:
                 cout << "Enter data to insert at beginning: ";
@@ -234,10 +206,9 @@ int main() {
                 cout << "Exiting program.\n";
                 break;
             default:
-                cout << "Invalid choice. Try again.\n";
+                cout << "Invalid choice.\n";
         }
 
     } while(choice != 9);
-
     return 0;
 }
